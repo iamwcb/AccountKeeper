@@ -5,6 +5,7 @@ import sys
 import os
 import sqlite3
 from PyQt5.QtCore import Qt
+
 # from PyQt5.QtCore import QCoreApplication
 
 style = """
@@ -29,6 +30,7 @@ style = """
     """
 button_hover = "QPushButton:hover{background-color:rgb(224, 128, 49);}"
 
+
 # 创建数据库连接
 def createConnection():
     # 选择数据库类型，这里为sqlite3数据库
@@ -37,6 +39,7 @@ def createConnection():
     db.setDatabaseName("wcbAccount.db")
     # 打开数据库
     db.open()
+
 
 # 创建表
 def createTable():
@@ -52,6 +55,7 @@ def createTable():
         q.exec_(u"insert into t1  values('admin','admin','admin')")
     q.exec_("commit")
 
+
 class Model(QSqlTableModel):
     def __init__(self, parent):
         QSqlTableModel.__init__(self, parent)
@@ -62,99 +66,94 @@ class Model(QSqlTableModel):
         # 数据更新的策略，详细可以查看Qt文档
         self.setEditStrategy(QSqlTableModel.OnManualSubmit)
 
+
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
 
-#表格，用于展示数据库中的数据
+
+# 表格，用于展示数据库中的数据
 class TestWidget(QWidget):
     def __init__(self):
         QWidget.__init__(self)
-        self.resize(1400, 800)  #窗口大小
+        self.resize(1400, 800)  # 窗口大小
         self.view = QTableView()
         self.model = Model(self.view)
         self.view.setModel(self.model)
-        self.view.setFont(QFont("Courier New", 10)) #设置表格字体
+        self.view.setFont(QFont("Courier New", 10))  # 设置表格字体
         # 按键布置
-        self.addbtn = QPushButton('Add')
-        self.delbtn = QPushButton('Delete')
-        self.cz = QPushButton("Modify LoginInfo")
-        self.Tabclose = QPushButton("Close")
-        self.modify = QPushButton("Modify")
+        # self.addbtn = QPushButton('Add')
+        # self.delbtn = QPushButton('Delete')
+        # self.cz = QPushButton("Modify LoginInfo")
+        # # self.Tabclose = QPushButton("Close")
+        # self.modify = QPushButton("Modify")
         # 按键样式设置
-        self.addbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.addbtn.setStyleSheet(button_hover)
-        self.delbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.delbtn.setStyleSheet(button_hover)
-        self.cz.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.cz.setStyleSheet(button_hover)
-        self.Tabclose.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.Tabclose.setStyleSheet(button_hover)
-        self.modify.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.modify.setStyleSheet(button_hover)
+        # self.addbtn.setFont(QFont("Courier New", 10, QFont.Bold))
+        # self.addbtn.setStyleSheet(button_hover)
+        # self.delbtn.setFont(QFont("Courier New", 10, QFont.Bold))
+        # self.delbtn.setStyleSheet(button_hover)
+        # self.cz.setFont(QFont("Courier New", 10, QFont.Bold))
+        # self.cz.setStyleSheet(button_hover)
+        # self.Tabclose.setFont(QFont("Courier New", 10, QFont.Bold))
+        # self.Tabclose.setStyleSheet(button_hover)
+        # self.modify.setFont(QFont("Courier New", 10, QFont.Bold))
+        # self.modify.setStyleSheet(button_hover)
         # 表格样式设置
-        self.view.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置单元格不可编辑
-        self.view.setSelectionBehavior(QTableView.SelectRows)  # 选取整行
+        #self.view.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置单元格不可编辑
+        #self.view.setSelectionBehavior(QTableView.SelectRows)  # 选取整行
         self.view.setAlternatingRowColors(True)  # 交替变色
         self.view.setStyleSheet("alternate-background-color: #F5F5F5;")  # 定义交替的色号
-        self.view.horizontalHeader().setStyleSheet("::section{Background-color:#252521;color:#fff;border:#3F3F3F;height:35px}")  # rgb末尾表示透明度0-255
+        self.view.horizontalHeader().setStyleSheet("::section{Background-color:#252521;color:#fff;border:#3F3F3F"
+                                                   ";height:35px}")  # rgb末尾表示透明度0-255
         self.view.horizontalHeader().setFont(QFont("Courier New", 13, QFont.Bold))
         self.view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.view.setFrameShape(QFrame.NoFrame)  # 无边框
         # 布局设置
         wwg = QWidget(self)
         wl = QHBoxLayout(wwg)
-        layout = QGridLayout()
-        layout.addWidget(self.addbtn, 0, 0)
-        layout.addWidget(self.delbtn, 1, 0)
-        layout.addWidget(self.cz, 2, 0)
-        layout.addWidget(self.modify, 3, 0)
-        layout.addWidget(self.Tabclose, 4, 0)
+        # layout = QGridLayout()
+        # layout.addWidget(self.addbtn, 0, 0)
+        # layout.addWidget(self.delbtn, 1, 0)
+        # layout.addWidget(self.cz, 2, 0)
+        # layout.addWidget(self.modify, 3, 0)
+        # layout.addWidget(self.Tabclose, 4, 0)
         wl.addWidget(self.view)
-        wl.addLayout(layout)
-        wl.setStretchFactor(layout, 1)
-        wl.setStretchFactor(self.view, 7)
+        # wl.addLayout(layout)
+        # wl.setStretchFactor(layout, 1)
+        # wl.setStretchFactor(self.view, 7)
         self.setLayout(wl)
         self.setStyleSheet(style)
-        self.initui_Table()
 
-    def initui_Table(self):
-        self.setWindowFlags(Qt.FramelessWindowHint) #去窗口
+    # def paintEvent(self, event):  # 设置背景图片
+    #     self.painter = QPainter()
+    #     self.painter.begin(self)
+    #     self.painter.drawPixmap(self.rect(), QPixmap(resource_path(r"pic\1.png")))
+    #     self.painter.end()
 
-    def paintEvent(self,event): #设置背景图片
-        self.painter = QPainter()
-        self.painter.begin(self)
-        self.painter.drawPixmap(self.rect(), QPixmap(resource_path(r"pic\1.png")))
-        self.painter.end()
-    def mousePressEvent(self, event): #以下3个函数用来使窗口可以拖动
-        if event.button() == Qt.LeftButton:
-            self.m_drag = True
-            self.m_DragPosition = event.globalPos() - self.pos()
-            event.accept()
 
-    def mouseMoveEvent(self, QMouseEvent):
-        if QMouseEvent.buttons() and Qt.LeftButton:
-            self.move(QMouseEvent.globalPos() - self.m_DragPosition)
-            QMouseEvent.accept()
-
-    def mouseReleaseEvent(self, QMouseEvent):
-        self.m_drag = False
-
-#增加记录的窗口
+# 增加记录的窗口
 class addWindow(QWidget):
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super(addWindow, self).__init__(parent)
         self.resize(400, 100)
         self.setStyleSheet(style)
         # self.setWindowOpacity(0.8)  # 窗口透明度
-        #设置增加记录的标签和文本框
+        # 设置增加记录的标签和文本框
         self.labelWebsite = QLabel("Website")
-        self.labelWebsite.setFont(QFont("Courier New",10,QFont.Bold))
         self.labelID = QLabel("ID")
-        self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
         self.labelPw = QLabel("Password")
+
+        pe = QPalette()
+        pe.setColor(QPalette.WindowText, Qt.white)
+        self.labelWebsite.setPalette(pe)
+        self.labelID.setPalette(pe)
+        self.labelPw.setPalette(pe)
+
+        self.labelWebsite.setFont(QFont("Courier New", 10, QFont.Bold))
+        self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
         self.labelPw.setFont(QFont("Courier New", 10, QFont.Bold))
+
         self.lineeditWebsite = QLineEdit()
         self.lineeditID = QLineEdit()
         self.lineeditPw = QLineEdit()
@@ -181,15 +180,15 @@ class addWindow(QWidget):
         self.initui()
 
     def initui(self):
-        self.setWindowFlags(Qt.FramelessWindowHint) #去窗口
+        self.setWindowFlags(Qt.FramelessWindowHint)  # 去窗口
 
-    def paintEvent(self,event): #设置背景图片
+    def paintEvent(self, event):  # 设置背景图片
         self.painter = QPainter()
         self.painter.begin(self)
-        self.painter.drawPixmap(self.rect(), QPixmap("E:/File/file_python/pycharm_file/pic/2.PNG"))
+        self.painter.drawPixmap(self.rect(), QPixmap(resource_path(r'pic/1.PNG')))
         self.painter.end()
 
-    def mousePressEvent(self, event): #以下3个函数用来使窗口可以拖动
+    def mousePressEvent(self, event):  # 以下3个函数用来使窗口可以拖动
         if event.button() == Qt.LeftButton:
             self.m_drag = True
             self.m_DragPosition = event.globalPos() - self.pos()
@@ -203,7 +202,8 @@ class addWindow(QWidget):
     def mouseReleaseEvent(self, QMouseEvent):
         self.m_drag = False
 
-#登录窗口
+
+# 登录窗口
 class LoginDialog(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
@@ -217,7 +217,7 @@ class LoginDialog(QDialog):
         self.lePassword = QLineEdit(self)
         self.lePassword.setFixedHeight(30)
         self.lePassword.setEchoMode(QLineEdit.Password)
-        #.setEchoMode(EchoMode),设置输入框显示格式,0--Normal,1--NoEcho,2--Password,3--PasswordEchoOnEdit
+        # .setEchoMode(EchoMode),设置输入框显示格式,0--Normal,1--NoEcho,2--Password,3--PasswordEchoOnEdit
         self.lePassword.setPlaceholderText(u'Password')
         self.lePassword.setFont(QFont("Courier New", 10, QFont.Bold))
 
@@ -245,7 +245,7 @@ class LoginDialog(QDialog):
         self.myacc, self.mypw = c.fetchone()
         self.initui()
 
-    def paintEvent(self,event): #设置背景图片
+    def paintEvent(self, event):  # 设置背景图片
         self.painter = QPainter()
         self.painter.begin(self)
         self.painter.drawPixmap(self.rect(), QPixmap(resource_path(r"pic\1.png")))
@@ -257,10 +257,11 @@ class LoginDialog(QDialog):
             self.accept()  # 关闭对话框并返回1
         else:
             QMessageBox.critical(self, u'ERROR', u'User name password mismatch')
-    def initui(self):
-        self.setWindowFlags(Qt.FramelessWindowHint) #去窗口
 
-    def mousePressEvent(self, event): #以下3个函数用来使窗口可以拖动
+    def initui(self):
+        self.setWindowFlags(Qt.FramelessWindowHint)  # 去窗口
+
+    def mousePressEvent(self, event):  # 以下3个函数用来使窗口可以拖动
         if event.button() == Qt.LeftButton:
             self.m_drag = True
             self.m_DragPosition = event.globalPos() - self.pos()
@@ -274,12 +275,13 @@ class LoginDialog(QDialog):
     def mouseReleaseEvent(self, QMouseEvent):
         self.m_drag = False
 
-#修改登录信息
+
+# 修改登录信息
 class xgdl(QDialog):
     def __init__(self, parent=None):
         super(xgdl, self).__init__(parent)
-        self.resize(400,250)
-        self.setWindowOpacity(0.8)  # 窗口透明度
+        self.resize(400, 250)
+        # self.setWindowOpacity(0.8)  # 窗口透明度
         self.oldpw = QLineEdit(self)
         self.oldpw.setPlaceholderText(u'original password')
         self.oldpw.setFont(QFont("Courier New", 9, QFont.Bold))
@@ -312,7 +314,7 @@ class xgdl(QDialog):
     def paintEvent(self, event):  # 设置背景图片
         self.painter = QPainter()
         self.painter.begin(self)
-        self.painter.drawPixmap(self.rect(), QPixmap("E:/File/file_python/pycharm_file/pic/2.PNG"))
+        self.painter.drawPixmap(self.rect(), QPixmap(resource_path(r'pic/1.PNG')))
         self.painter.end()
 
     def initui(self):
@@ -332,14 +334,15 @@ class xgdl(QDialog):
     def mouseReleaseEvent(self, QMouseEvent):
         self.m_drag = False
 
-#确认删除的窗口
+
+# 确认删除的窗口
 class qrshanchu(QDialog):
-    def __init__(self,parent=None):
-        super(qrshanchu,self).__init__(parent)
-        self.resize(300,100)
+    def __init__(self, parent=None):
+        super(qrshanchu, self).__init__(parent)
+        self.resize(300, 100)
         self.setWindowFlags(Qt.WindowCloseButtonHint)
         self.setStyleSheet(style)
-        self.setWindowOpacity(0.8)  # 窗口透明度
+        # self.setWindowOpacity(0.8)  # 窗口透明度
         self.btn1 = QPushButton("Yes")
         self.btn2 = QPushButton("Cancel")
 
@@ -354,15 +357,16 @@ class qrshanchu(QDialog):
         self.setLayout(layout)
         self.initui()
 
-    def paintEvent(self,event): #设置背景图片
+    def paintEvent(self, event):  # 设置背景图片
         self.painter = QPainter()
         self.painter.begin(self)
-        self.painter.drawPixmap(self.rect(), QPixmap("E:/File/file_python/pycharm_file/pic/1.PNG"))
+        self.painter.drawPixmap(self.rect(), QPixmap(resource_path(r'pic/1.PNG')))
         self.painter.end()
-    def initui(self):
-        self.setWindowFlags(Qt.FramelessWindowHint) #去窗口
 
-    def mousePressEvent(self, event): #以下3个函数用来使窗口可以拖动
+    def initui(self):
+        self.setWindowFlags(Qt.FramelessWindowHint)  # 去窗口
+
+    def mousePressEvent(self, event):  # 以下3个函数用来使窗口可以拖动
         if event.button() == Qt.LeftButton:
             self.m_drag = True
             self.m_DragPosition = event.globalPos() - self.pos()
@@ -376,19 +380,28 @@ class qrshanchu(QDialog):
     def mouseReleaseEvent(self, QMouseEvent):
         self.m_drag = False
 
+
 class modifyinfo(QWidget):
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super(modifyinfo, self).__init__(parent)
         self.resize(400, 100)
         self.setStyleSheet(style)
         # self.setWindowOpacity(0.8)  # 窗口透明度
-        #设置增加记录的标签和文本框
+        # 设置增加记录的标签和文本框
         self.labelWebsite = QLabel("New Website")
-        self.labelWebsite.setFont(QFont("Courier New",10,QFont.Bold))
         self.labelID = QLabel("New ID")
-        self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
         self.labelPw = QLabel("New Password")
+
+        pe = QPalette()
+        pe.setColor(QPalette.WindowText, Qt.white)
+        self.labelWebsite.setPalette(pe)
+        self.labelID.setPalette(pe)
+        self.labelPw.setPalette(pe)
+
+        self.labelWebsite.setFont(QFont("Courier New", 10, QFont.Bold))
+        self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
         self.labelPw.setFont(QFont("Courier New", 10, QFont.Bold))
+
         self.lineeditWebsite = QLineEdit()
         self.lineeditID = QLineEdit()
         self.lineeditPw = QLineEdit()
@@ -415,15 +428,15 @@ class modifyinfo(QWidget):
         self.initui()
 
     def initui(self):
-        self.setWindowFlags(Qt.FramelessWindowHint) #去窗口
+        self.setWindowFlags(Qt.FramelessWindowHint)  # 去窗口
 
-    def paintEvent(self,event): #设置背景图片
+    def paintEvent(self, event):  # 设置背景图片
         self.painter = QPainter()
         self.painter.begin(self)
-        self.painter.drawPixmap(self.rect(), QPixmap("E:/File/file_python/pycharm_file/pic/2.PNG"))
+        self.painter.drawPixmap(self.rect(), QPixmap(resource_path(r'pic/1.PNG')))
         self.painter.end()
 
-    def mousePressEvent(self, event): #以下3个函数用来使窗口可以拖动
+    def mousePressEvent(self, event):  # 以下3个函数用来使窗口可以拖动
         if event.button() == Qt.LeftButton:
             self.m_drag = True
             self.m_DragPosition = event.globalPos() - self.pos()
@@ -437,20 +450,77 @@ class modifyinfo(QWidget):
     def mouseReleaseEvent(self, QMouseEvent):
         self.m_drag = False
 
-#把所有窗口串联起来
+
+# 主窗口
 class mainw(QMainWindow):
-    def __init__(self,parent = None):
+    def __init__(self, parent=None):
         super(mainw, self).__init__(parent)
+        self.setWindowIcon(QIcon(resource_path(r'pic\exit.ico')))
         self.window1 = TestWidget()
         self.window2 = qrshanchu()
         self.window3 = addWindow()
         self.window4 = xgdl()
         self.window5 = modifyinfo()
-        self.window1.addbtn.clicked.connect(self.addclick)
-        self.window1.delbtn.clicked.connect(self.subclick)
-        self.window1.cz.clicked.connect(self.xg)
-        self.window1.modify.clicked.connect(self.modifyThisRow)
-        self.window1.Tabclose.clicked.connect(self.closeWindow)
+
+        self.statusBar()  # 创建一个空的状态栏
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('File')
+        eidtMenu = menubar.addMenu('Edit')
+        setMenu = menubar.addMenu('Settings')
+        helpMenu = menubar.addMenu('Help')
+
+        # 给menu创建一个Action
+        exitAction = QAction(QIcon(resource_path(r'pic\exit.ico')), 'Exit', self)
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip('Exit Application')
+        exitAction.triggered.connect(qApp.quit)
+        # 将这个Action添加到fileMenu上
+        fileMenu.addAction(exitAction)
+
+        # 给Edit创建Action
+        # 第一个，增加一条记录
+        addAction = QAction(QIcon(resource_path(r'pic\exit.ico')), 'Add', self)
+        addAction.setShortcut('Ctrl+N')
+        addAction.setStatusTip('Add one information')
+        addAction.triggered.connect(self.addclick)
+        eidtMenu.addAction(addAction)
+        # 第二个，删除一条记录
+        delAction = QAction(QIcon(resource_path(r'pic\exit.ico')), 'Delete', self)
+        delAction.setShortcut('Delete')
+        delAction.setStatusTip('Delete one information')
+        delAction.triggered.connect(self.subclick)
+        eidtMenu.addAction(delAction)
+        # 第三个，修改一条记录
+        modifyAction = QAction(QIcon(resource_path(r'pic\exit.ico')), 'Modify', self)
+        modifyAction.setShortcut('Ctrl+M')
+        modifyAction.setStatusTip('Modify one information')
+        modifyAction.triggered.connect(self.modifyThisRow)
+        eidtMenu.addAction(modifyAction)
+
+        # 给Settings创建Action
+        modifyLogin = QAction(QIcon(resource_path(r'pic\exit.ico')), 'Modify Login Information', self)
+        # modifyLogin.setShortcut('')
+        modifyLogin.setStatusTip('Modify Login Information')
+        modifyLogin.triggered.connect(self.xg)
+        setMenu.addAction(modifyLogin)
+
+        aboutAction = QAction(QIcon(resource_path(r'pic\exit.ico')), 'About', self)
+        # aboutAction.setShortcut('Ctrl+M')
+        aboutAction.setStatusTip('About this software')
+        aboutAction.triggered.connect(self.aboutbtn)
+        helpMenu.addAction(aboutAction)
+
+        self.setWindowTitle('Account Manager')
+        self.setGeometry(300, 300, 450, 450)
+
+        self.mainFormLayout = QVBoxLayout(self.window1)
+        self.window1.setLayout(self.mainFormLayout)
+        self.setCentralWidget(self.window1)
+        # self.window1.addbtn.clicked.connect(self.addclick)
+        # self.window1.delbtn.clicked.connect(self.subclick)
+        # self.window1.cz.clicked.connect(self.xg)
+        # self.window1.modify.clicked.connect(self.modifyThisRow)
+        # self.window1.Tabclose.clicked.connect(self.closeWindow)
         self.window2.btn1.clicked.connect(self.yes)
         self.window2.btn2.clicked.connect(self.no)
         self.window3.yesbtn.clicked.connect(self.myinput)
@@ -459,6 +529,10 @@ class mainw(QMainWindow):
         self.window4.quxiao.clicked.connect(self.qx)
         self.window5.yesbtn.clicked.connect(self.confirmModifyInfo)
         self.window5.cancelbtn.clicked.connect(self.cancelModifyInfo)
+
+    def aboutbtn(self):
+        QMessageBox.about(self, u'About',
+                          u'Account Manager (Version 1.0)\n\nThis software is used to record your account and password. The \'admin\' row represents login information, it cannot be delete!\n\n\n\nwcb All Rights Reserved')
 
     def cancelModifyInfo(self):
         self.window5.close()
@@ -476,10 +550,12 @@ class mainw(QMainWindow):
         inputPw = self.window5.lineeditPw.text()
         conn = sqlite3.connect('wcbAccount.db')
         c = conn.cursor()
-        print(web,acc,pw)
+        print(web, acc, pw)
         # c.execute("SELECT Website,ID,Password FROM t1 WHERE Website='%s'" % web)
         # info = c.fetchone()
-        c.execute("UPDATE t1 SET Website='%s',ID='%s', Password='%s' WHERE Website == '%s' AND ID == '%s' AND Password == '%s' " % (inputWs,inputAcc,inputPw, web, acc, pw))
+        c.execute(
+            "UPDATE t1 SET Website='%s',ID='%s', Password='%s' WHERE Website == '%s' AND ID == '%s' AND Password == '%s' " % (
+            inputWs, inputAcc, inputPw, web, acc, pw))
         conn.commit()
         self.window5.lineeditWebsite.setText('')
         self.window5.lineeditID.setText('')
@@ -499,10 +575,10 @@ class mainw(QMainWindow):
     def xg(self):
         self.window4.show()
 
-    def closeWindow(self):
-        self.window1.close()
-        self.window2.close()
-        self.window3.close()
+    # def closeWindow(self):
+    #     self.window1.close()
+    #     self.window2.close()
+    #     self.window3.close()
 
     def yes(self):
         index = self.window1.view.currentIndex()
@@ -532,7 +608,6 @@ class mainw(QMainWindow):
         else:
             QMessageBox.warning(self, u'Warning', r"Website cannot be 'admin!'")
             self.window3.close()
-
 
     def cancelInput(self):
         self.window3.close()
@@ -567,13 +642,14 @@ class mainw(QMainWindow):
         self.window4.newacc.setText('')
         self.window4.newpw.setText('')
 
+
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    # QCoreApplication.addLibraryPath("./")
     createConnection()
     createTable()
     dlck = LoginDialog()
     if dlck.exec_():
         w = mainw()
-        w.window1.show()
+        w.resize(1400, 800)
+        w.show()
         sys.exit(a.exec_())

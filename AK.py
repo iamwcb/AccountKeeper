@@ -551,7 +551,7 @@ class mainw(QMainWindow):
 
     def aboutbtn(self):
         QMessageBox.about(self, u'About',
-                          u'Account Manager (Version 1.0)\n\nThis software is used to record your account and password. The \'admin\' row represents login information, it cannot be delete!\n\n\n\nwcb All Rights Reserved')
+                          u'Account Manager (Version 1.1)\n\nThis software is used to record your account and password. The \'admin\' row represents login information, it cannot be delete!\n\n\n\nwcb All Rights Reserved')
 
     def cancelModifyInfo(self):
         self.window5.close()

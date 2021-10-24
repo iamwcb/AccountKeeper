@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 import sys
 import os
 import sqlite3
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRect
 from base64 import b64decode
 # from PyQt5.QtCore import QCoreApplication
 
@@ -76,12 +76,6 @@ class Model(QSqlTableModel):
         self.select()
         # 数据更新的策略，详细可以查看Qt文档
         self.setEditStrategy(QSqlTableModel.OnManualSubmit)
-
-
-def resource_path(relative_path):
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
 
 
 # 表格，用于展示数据库中的数据
@@ -263,9 +257,9 @@ class LoginDialog(QDialog):
         self.painter.end()
 
     def login(self):
-        print('login successfully!')
         if self.leName.text() == self.myacc and self.lePassword.text() == self.mypw:
             self.accept()  # 关闭对话框并返回1
+            print('login successfully!')
         else:
             QMessageBox.critical(self, u'ERROR', u'User name password mismatch')
 
@@ -522,7 +516,7 @@ class mainw(QMainWindow):
         helpMenu.addAction(aboutAction)
 
         self.setWindowTitle('Account Manager')
-        self.setGeometry(300, 300, 450, 450)
+        #self.setGeometry(300, 300, 450, 450)
 
         self.mainFormLayout = QVBoxLayout(self.window1)
         self.window1.setLayout(self.mainFormLayout)

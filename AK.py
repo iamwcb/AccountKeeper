@@ -599,7 +599,7 @@ class mainw(QMainWindow):
 
     def aboutbtn(self):
         QMessageBox.about(self, u'About',
-                          u'Account Manager (Version 1.1)\n\nThis software is used to record your account and password. \n\n\n\nLucas Wu All Rights Reserved')
+                          u'Account Manager (Version 1.2)\n\nThis software is used to record your account and password. \n\n\n\nLucas Wu All Rights Reserved')
 
     def cancelModifyInfo(self):
         self.window5.close()

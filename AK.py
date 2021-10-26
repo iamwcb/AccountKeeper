@@ -1,4 +1,6 @@
 import configparser
+import random
+import string
 
 from PyQt5.QtSql import *
 from PyQt5.QtWidgets import *
@@ -78,7 +80,7 @@ def createTable():
     q.exec_("commit")
 
 
-#若无ini文件，则创建
+# 若无ini文件，则创建
 def createIni():
     config = configparser.ConfigParser()
     file = config.read('user.ini')
@@ -91,8 +93,8 @@ def createIni():
             "password": "admin",
             "remember": "False"
         }
-    with open('user.ini', 'w') as configfile:
-        config.write(configfile)
+        with open('user.ini', 'w') as configfile:
+            config.write(configfile)
 
 
 class Model(QSqlTableModel):
@@ -175,7 +177,20 @@ class addWindow(QWidget):
         self.labelWebsite = QLabel("Website")
         self.labelID = QLabel("ID")
         self.labelPw = QLabel("Password")
-
+        self.auto_az = QCheckBox("a-z")
+        self.auto_AZ = QCheckBox("A-Z")
+        self.auto_num = QCheckBox("0-9")
+        self.auto_char = QCheckBox("!@#$...")
+        self.pwLenLabel = QLabel("Password Length")
+        # 密码长度
+        self.pwLen = QSpinBox(self)
+        self.pwLen.setRange(1, 100)
+        self.pwLen.setSingleStep(1)
+        self.pwLen.setValue(8)
+        # 设置复选框默认为选中状态
+        self.auto_az.setChecked(True)
+        self.auto_AZ.setChecked(True)
+        self.auto_num.setChecked(True)
         pe = QPalette()
         pe.setColor(QPalette.WindowText, Qt.white)
         self.labelWebsite.setPalette(pe)
@@ -185,6 +200,11 @@ class addWindow(QWidget):
         self.labelWebsite.setFont(QFont("Courier New", 10, QFont.Bold))
         self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
         self.labelPw.setFont(QFont("Courier New", 10, QFont.Bold))
+        self.auto_az.setStyleSheet('Color: white')
+        self.auto_AZ.setStyleSheet('Color: white')
+        self.auto_num.setStyleSheet('Color: white')
+        self.auto_char.setStyleSheet('Color: white')
+        self.pwLenLabel.setStyleSheet('Color: white')
 
         self.lineeditWebsite = QLineEdit()
         self.lineeditWebsite.setFont(QFont("Verdana", 9))
@@ -194,11 +214,14 @@ class addWindow(QWidget):
         self.lineeditPw.setFont(QFont("Verdana", 9))
         self.yesbtn = QPushButton('Yes')
         self.cancelbtn = QPushButton('Cancel')
+        self.genPw = QPushButton('Generate')
 
         self.yesbtn.setFont(QFont("Courier New", 10, QFont.Bold))
         self.yesbtn.setStyleSheet(button_hover)
         self.cancelbtn.setFont(QFont("Courier New", 10, QFont.Bold))
         self.cancelbtn.setStyleSheet(button_hover)
+        self.genPw.setFont(QFont("Courier New", 8, QFont.Bold))
+        self.genPw.setStyleSheet(button_hover)
 
         buttonLayout = QHBoxLayout()
         buttonLayout.addWidget(self.yesbtn)
@@ -210,6 +233,17 @@ class addWindow(QWidget):
         layout.addWidget(self.lineeditID)
         layout.addWidget(self.labelPw)
         layout.addWidget(self.lineeditPw)
+        autoPwLayout1 = QHBoxLayout()
+        autoPwLayout1.addWidget(self.auto_az)
+        autoPwLayout1.addWidget(self.auto_AZ)
+        autoPwLayout1.addWidget(self.auto_num)
+        autoPwLayout1.addWidget(self.auto_char)
+        autoPwLayout2 = QVBoxLayout()
+        autoPwLayout2.addWidget(self.pwLenLabel)
+        autoPwLayout2.addWidget(self.pwLen)
+        autoPwLayout1.addLayout(autoPwLayout2)
+        autoPwLayout1.addWidget(self.genPw)
+        layout.addLayout(autoPwLayout1)
         layout.addLayout(buttonLayout)
         self.setLayout(layout)
         self.initui()
@@ -324,7 +358,6 @@ class LoginDialog(QDialog):
             #     }
         else:
             QMessageBox.critical(self, u'ERROR', u'User name password mismatch')
-
 
     def initui(self):
         self.setWindowFlags(Qt.FramelessWindowHint)  # 去窗口
@@ -609,10 +642,47 @@ class mainw(QMainWindow):
         self.window2.btn2.clicked.connect(self.no)
         self.window3.yesbtn.clicked.connect(self.myinput)
         self.window3.cancelbtn.clicked.connect(self.cancelInput)
+        self.window3.genPw.clicked.connect(self.autoGenPw)
         self.window4.queren.clicked.connect(self.cz)
         self.window4.quxiao.clicked.connect(self.qx)
         self.window5.yesbtn.clicked.connect(self.confirmModifyInfo)
         self.window5.cancelbtn.clicked.connect(self.cancelModifyInfo)
+
+    def autoGenPw(self):
+        total_list = ""
+        list_az = string.ascii_lowercase
+        list_AZ = string.ascii_uppercase
+        list_num = string.digits
+        list_char = string.punctuation
+        if self.window3.auto_az.isChecked() or self.window3.auto_AZ.isChecked() or self.window3.auto_num.isChecked() or self.window3.auto_char.isChecked():
+            if self.window3.auto_az.isChecked():
+                total_list = total_list + list_az
+                if self.window3.auto_AZ.isChecked():
+                    total_list = total_list + list_AZ
+                    if self.window3.auto_num.isChecked():
+                        total_list = total_list + list_num
+                        if self.window3.auto_char.isChecked():
+                            total_list = total_list + list_char
+            elif self.window3.auto_AZ.isChecked():
+                total_list = total_list + list_AZ
+                if self.window3.auto_num.isChecked():
+                    total_list = total_list + list_num
+                    if self.window3.auto_char.isChecked():
+                        total_list = total_list + list_char
+            elif self.window3.auto_num.isChecked():
+                total_list = total_list + list_num
+                if self.window3.auto_char.isChecked():
+                    total_list = total_list + list_char
+            else:
+                total_list = total_list + list_char
+            # print(self.window3.pwLen.value())
+            auto_gen_pw = ''
+            auto_gen_pw = auto_gen_pw.join(random.sample(total_list, int(self.window3.pwLen.value())))
+            # print(auto_gen_pw)
+            self.window3.lineeditPw.setText(auto_gen_pw)
+        else:
+            QMessageBox.critical(self, u'Warning', u'Check at least one check box!')
+
 
     def aboutbtn(self):
         QMessageBox.about(self, u'About',
@@ -694,22 +764,18 @@ class mainw(QMainWindow):
         file = config.read('user.ini')
         config_dict = config.defaults()
         if self.window4.oldpw.text() == config_dict['password']:
-            if self.window4.newpw.text() != '' and self.window4.newacc.text() != '':
-                config["DEFAULT"] = {
-                    "user_name": self.window4.newacc.text(),
-                    "password": self.window4.newpw.text(),
-                    "remember": False
-                }
-                QMessageBox.information(self, "Successful!", "Login Information Modified Successfully",
-                                        QMessageBox.Yes | QMessageBox.No)
-                self.window4.oldpw.setText('')
-                self.window4.newacc.setText('')
-                self.window4.newpw.setText('')
-                self.window4.close()
-            else:
-                QMessageBox.critical(self, u'Warning', u'Cannot be empty!')
+            config["DEFAULT"] = {
+                "user_name": self.window4.newacc.text(),
+                "password": self.window4.newpw.text(),
+                "remember": False
+            }
             with open('user.ini', 'w') as configfile:
                 config.write(configfile)
+            QMessageBox.information(self, "Successful!", "Login Information Modified Successfully")
+            self.window4.oldpw.setText('')
+            self.window4.newacc.setText('')
+            self.window4.newpw.setText('')
+            self.window4.close()
         else:
             QMessageBox.critical(self, u'Warning', u'Wrong Password')
 

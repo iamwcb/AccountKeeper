@@ -78,6 +78,23 @@ def createTable():
     q.exec_("commit")
 
 
+#若无ini文件，则创建
+def createIni():
+    config = configparser.ConfigParser()
+    file = config.read('user.ini')
+    config_dict = config.defaults()
+    if config.defaults():
+        print('yes')
+    else:
+        config["DEFAULT"] = {
+            "user_name": "admin",
+            "password": "admin",
+            "remember": "False"
+        }
+    with open('user.ini', 'w') as configfile:
+        config.write(configfile)
+
+
 class Model(QSqlTableModel):
     def __init__(self, parent):
         QSqlTableModel.__init__(self, parent)
@@ -291,23 +308,23 @@ class LoginDialog(QDialog):
         if self.leName.text() == config_dict['user_name'] and self.lePassword.text() == config_dict['password']:
             self.accept()  # 关闭对话框并返回1
             print('login successfully!')
+            if self.keepPwBtn.isChecked():
+                config["DEFAULT"] = {
+                    "user_name": self.leName.text(),
+                    "password": self.lePassword.text(),
+                    "remember": "True"
+                }
+                with open('user.ini', 'w') as configfile:
+                    config.write(configfile)
+            # else:
+            #     config["DEFAULT"] = {
+            #         "user_name": self.leName.text(),
+            #         "password": "",
+            #         "remember": self.keepPwBtn.isChecked()
+            #     }
         else:
             QMessageBox.critical(self, u'ERROR', u'User name password mismatch')
-        config = configparser.ConfigParser()
-        if self.keepPwBtn.isChecked():
-            config["DEFAULT"] = {
-                "user_name": self.leName.text(),
-                "password": self.lePassword.text(),
-                "remember": self.keepPwBtn.isChecked()
-            }
-        else:
-            config["DEFAULT"] = {
-                "user_name": self.leName.text(),
-                "password": "",
-                "remember": self.keepPwBtn.isChecked()
-            }
-        with open('user.ini', 'w') as configfile:
-            config.write(configfile)
+
 
     def initui(self):
         self.setWindowFlags(Qt.FramelessWindowHint)  # 去窗口
@@ -707,6 +724,7 @@ if __name__ == "__main__":
     a = QApplication(sys.argv)
     createConnection()
     createTable()
+    createIni()
     dlck = LoginDialog()
     if dlck.exec_():
         w = mainw()

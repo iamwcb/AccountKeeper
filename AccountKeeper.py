@@ -10,6 +10,7 @@ import os
 import sqlite3
 from PyQt5.QtCore import Qt, QRect
 from base64 import b64decode
+from addWindow import Ui_addWindow
 
 
 # from PyQt5.QtCore import QCoreApplication
@@ -39,26 +40,41 @@ get_pic(delete_fill_png, 'delete_fill.png')
 get_pic(modify_png, 'modify.png')
 get_pic(modify_login_png, 'modify_login.png')
 
-style = """
-        .QPushButton{
-        border-style:none;
-        border:1px solid #C2CCD8; 
-        color:#fff;  
-        padding:5px;
-        min-height:25px;
-        #border-radius:5px;
-        selection-color:pink;
-        font-size:20px;
-        font-weight:800;
-        #backgrounE:qlineargradient(spreaE:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #4D4D4D,stop:1 #292929);#渐变色
-        }
-        # .QPushButton:hover{background-color:white; color: black;}
-        # .QPushButton:pressed{background-color:rgb(46, 104, 170); border-style: inset; }
-        .QLineEdit{
+Button_style = ''' 
+                     QPushButton
+                     {text-align : center;
+                     font-family: Courier New;
+                     font: bold;
+                     border-color: gray;
+                     border-width: 2px;
+                     border-radius: 10px;
+                     padding: 6px;
+                     height : 14px;
+                     border-style: outset;
+                     font : 14px;}
+                     QPushButton:pressed
+                     {text-align : center;
+                     background-color : light gray;
+                     font: bold;
+                     height : 14px;
+                     font : 14px;}
+                     QPushButton:hover
+                     {background-color:rgb(224, 128, 49);}
+                     '''
+LineEdit_style = """
+        QLineEdit{
         font-family:"Courier New";
-        font-size:20px;
-        }
-    """
+        font-size:10px;
+        }"""
+
+Label_style = """
+        QLabel{
+        font-family:"Courier New";
+        color: white;
+        font-weight: bold;
+        font-size:10px;
+        } """
+
 button_hover = "QPushButton:hover{background-color:rgb(224, 128, 49);}"
 
 
@@ -157,7 +173,7 @@ class TestWidget(QWidget):
         # wl.setStretchFactor(layout, 1)
         # wl.setStretchFactor(self.view, 7)
         self.setLayout(wl)
-        self.setStyleSheet(style)
+        # self.setStyleSheet(style)
 
     # def paintEvent(self, event):  # 设置背景图片
     #     self.painter = QPainter()
@@ -167,85 +183,124 @@ class TestWidget(QWidget):
 
 
 # 增加记录的窗口
-class addWindow(QWidget):
+# class addWindow(QWidget):
+#     def __init__(self, parent=None):
+#         super(addWindow, self).__init__(parent)
+#         self.resize(400, 100)
+#         self.setStyleSheet(style)
+#         # self.setWindowOpacity(0.8)  # 窗口透明度
+#         # 设置增加记录的标签和文本框
+#         self.labelWebsite = QLabel("Website")
+#         self.labelID = QLabel("ID")
+#         self.labelPw = QLabel("Password")
+#         self.auto_az = QCheckBox("a-z")
+#         self.auto_AZ = QCheckBox("A-Z")
+#         self.auto_num = QCheckBox("0-9")
+#         self.auto_char = QCheckBox("!@#$...")
+#         self.pwLenLabel = QLabel("Password Length")
+#         # 密码长度
+#         self.pwLen = QSpinBox(self)
+#         self.pwLen.setRange(1, 100)
+#         self.pwLen.setSingleStep(1)
+#         self.pwLen.setValue(16)
+#         # 设置复选框默认为选中状态
+#         self.auto_az.setChecked(True)
+#         self.auto_AZ.setChecked(True)
+#         self.auto_num.setChecked(True)
+#         pe = QPalette()
+#         pe.setColor(QPalette.WindowText, Qt.white)
+#         self.labelWebsite.setPalette(pe)
+#         self.labelID.setPalette(pe)
+#         self.labelPw.setPalette(pe)
+#
+#         self.labelWebsite.setFont(QFont("Courier New", 10, QFont.Bold))
+#         self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
+#         self.labelPw.setFont(QFont("Courier New", 10, QFont.Bold))
+#         self.auto_az.setStyleSheet('Color: white')
+#         self.auto_AZ.setStyleSheet('Color: white')
+#         self.auto_num.setStyleSheet('Color: white')
+#         self.auto_char.setStyleSheet('Color: white')
+#         self.pwLenLabel.setStyleSheet('Color: white')
+#
+#         self.lineeditWebsite = QLineEdit()
+#         self.lineeditWebsite.setFont(QFont("Verdana", 9))
+#         self.lineeditID = QLineEdit()
+#         self.lineeditID.setFont(QFont("Verdana", 9))
+#         self.lineeditPw = QLineEdit()
+#         self.lineeditPw.setFont(QFont("Verdana", 9))
+#         self.yesbtn = QPushButton('Yes')
+#         self.cancelbtn = QPushButton('Cancel')
+#         self.genPw = QPushButton('Generate')
+#
+#         self.yesbtn.setFont(QFont("Courier New", 10, QFont.Bold))
+#         self.yesbtn.setStyleSheet(button_hover)
+#         self.cancelbtn.setFont(QFont("Courier New", 10, QFont.Bold))
+#         self.cancelbtn.setStyleSheet(button_hover)
+#         self.genPw.setFont(QFont("Courier New", 8, QFont.Bold))
+#         self.genPw.setStyleSheet(button_hover)
+#
+#         buttonLayout = QHBoxLayout()
+#         buttonLayout.addWidget(self.yesbtn)
+#         buttonLayout.addWidget(self.cancelbtn)
+#         layout = QVBoxLayout()
+#         layout.addWidget(self.labelWebsite)
+#         layout.addWidget(self.lineeditWebsite)
+#         layout.addWidget(self.labelID)
+#         layout.addWidget(self.lineeditID)
+#         layout.addWidget(self.labelPw)
+#         layout.addWidget(self.lineeditPw)
+#         autoPwLayout1 = QHBoxLayout()
+#         autoPwLayout1.addWidget(self.auto_az)
+#         autoPwLayout1.addWidget(self.auto_AZ)
+#         autoPwLayout1.addWidget(self.auto_num)
+#         autoPwLayout1.addWidget(self.auto_char)
+#         autoPwLayout2 = QVBoxLayout()
+#         autoPwLayout2.addWidget(self.pwLenLabel)
+#         autoPwLayout2.addWidget(self.pwLen)
+#         autoPwLayout1.addLayout(autoPwLayout2)
+#         autoPwLayout1.addWidget(self.genPw)
+#         layout.addLayout(autoPwLayout1)
+#         layout.addLayout(buttonLayout)
+#         self.setLayout(layout)
+#         self.initui()
+#
+#     def initui(self):
+#         self.setWindowFlags(Qt.FramelessWindowHint)  # 去窗口
+#
+#     def paintEvent(self, event):  # 设置背景图片
+#         self.painter = QPainter()
+#         self.painter.begin(self)
+#         self.painter.drawPixmap(self.rect(), QPixmap('BM.png'))
+#         self.painter.end()
+#
+#     def mousePressEvent(self, event):  # 以下3个函数用来使窗口可以拖动
+#         if event.button() == Qt.LeftButton:
+#             self.m_drag = True
+#             self.m_DragPosition = event.globalPos() - self.pos()
+#             event.accept()
+#
+#     def mouseMoveEvent(self, QMouseEvent):
+#         if QMouseEvent.buttons() and Qt.LeftButton:
+#             self.move(QMouseEvent.globalPos() - self.m_DragPosition)
+#             QMouseEvent.accept()
+#
+#     def mouseReleaseEvent(self, QMouseEvent):
+#         self.m_drag = False
+
+# 增加记录的窗口
+class addWindow(QDialog, Ui_addWindow):
     def __init__(self, parent=None):
         super(addWindow, self).__init__(parent)
-        self.resize(400, 100)
-        self.setStyleSheet(style)
-        # self.setWindowOpacity(0.8)  # 窗口透明度
-        # 设置增加记录的标签和文本框
-        self.labelWebsite = QLabel("Website")
-        self.labelID = QLabel("ID")
-        self.labelPw = QLabel("Password")
-        self.auto_az = QCheckBox("a-z")
-        self.auto_AZ = QCheckBox("A-Z")
-        self.auto_num = QCheckBox("0-9")
-        self.auto_char = QCheckBox("!@#$...")
-        self.pwLenLabel = QLabel("Password Length")
-        # 密码长度
-        self.pwLen = QSpinBox(self)
-        self.pwLen.setRange(1, 100)
-        self.pwLen.setSingleStep(1)
-        self.pwLen.setValue(16)
-        # 设置复选框默认为选中状态
-        self.auto_az.setChecked(True)
-        self.auto_AZ.setChecked(True)
-        self.auto_num.setChecked(True)
-        pe = QPalette()
-        pe.setColor(QPalette.WindowText, Qt.white)
-        self.labelWebsite.setPalette(pe)
-        self.labelID.setPalette(pe)
-        self.labelPw.setPalette(pe)
-
-        self.labelWebsite.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.labelPw.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.auto_az.setStyleSheet('Color: white')
-        self.auto_AZ.setStyleSheet('Color: white')
-        self.auto_num.setStyleSheet('Color: white')
-        self.auto_char.setStyleSheet('Color: white')
-        self.pwLenLabel.setStyleSheet('Color: white')
-
-        self.lineeditWebsite = QLineEdit()
-        self.lineeditWebsite.setFont(QFont("Verdana", 9))
-        self.lineeditID = QLineEdit()
-        self.lineeditID.setFont(QFont("Verdana", 9))
-        self.lineeditPw = QLineEdit()
-        self.lineeditPw.setFont(QFont("Verdana", 9))
-        self.yesbtn = QPushButton('Yes')
-        self.cancelbtn = QPushButton('Cancel')
-        self.genPw = QPushButton('Generate')
-
-        self.yesbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.yesbtn.setStyleSheet(button_hover)
-        self.cancelbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.cancelbtn.setStyleSheet(button_hover)
-        self.genPw.setFont(QFont("Courier New", 8, QFont.Bold))
-        self.genPw.setStyleSheet(button_hover)
-
-        buttonLayout = QHBoxLayout()
-        buttonLayout.addWidget(self.yesbtn)
-        buttonLayout.addWidget(self.cancelbtn)
-        layout = QVBoxLayout()
-        layout.addWidget(self.labelWebsite)
-        layout.addWidget(self.lineeditWebsite)
-        layout.addWidget(self.labelID)
-        layout.addWidget(self.lineeditID)
-        layout.addWidget(self.labelPw)
-        layout.addWidget(self.lineeditPw)
-        autoPwLayout1 = QHBoxLayout()
-        autoPwLayout1.addWidget(self.auto_az)
-        autoPwLayout1.addWidget(self.auto_AZ)
-        autoPwLayout1.addWidget(self.auto_num)
-        autoPwLayout1.addWidget(self.auto_char)
-        autoPwLayout2 = QVBoxLayout()
-        autoPwLayout2.addWidget(self.pwLenLabel)
-        autoPwLayout2.addWidget(self.pwLen)
-        autoPwLayout1.addLayout(autoPwLayout2)
-        autoPwLayout1.addWidget(self.genPw)
-        layout.addLayout(autoPwLayout1)
-        layout.addLayout(buttonLayout)
-        self.setLayout(layout)
+        self.setupUi(self)
+        self.yesbtn.setStyleSheet(Button_style)
+        self.cancelbtn.setStyleSheet(Button_style)
+        self.genPw.setStyleSheet(Button_style)
+        self.labelWebsite.setStyleSheet(Label_style)
+        self.labelID.setStyleSheet(Label_style)
+        self.labelPw.setStyleSheet(Label_style)
+        self.lineeditWebsite.setStyleSheet(LineEdit_style)
+        self.lineeditID.setStyleSheet(LineEdit_style)
+        self.lineeditPw.setStyleSheet(LineEdit_style)
         self.initui()
 
     def initui(self):
@@ -271,14 +326,13 @@ class addWindow(QWidget):
     def mouseReleaseEvent(self, QMouseEvent):
         self.m_drag = False
 
-
 # 登录窗口
 class LoginDialog(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         # self.setWindowOpacity(0.9) #窗口透明度
         self.resize(400, 250)
-        self.setStyleSheet(style)
+        # self.setStyleSheet(style)
         self.leName = QLineEdit(self)
         self.leName.setFixedHeight(30)
         self.leName.setPlaceholderText(u'Account')
@@ -423,7 +477,7 @@ class xgdl(QDialog):
         layout.addWidget(self.newpw)
         layout.addLayout(buttonLayout)
         self.setLayout(layout)
-        self.setStyleSheet(style)
+        # self.setStyleSheet(style)
         self.initui()
 
     def paintEvent(self, event):  # 设置背景图片
@@ -456,7 +510,7 @@ class qrshanchu(QDialog):
         super(qrshanchu, self).__init__(parent)
         self.resize(300, 100)
         self.setWindowFlags(Qt.WindowCloseButtonHint)
-        self.setStyleSheet(style)
+        # self.setStyleSheet(style)
         # self.setWindowOpacity(0.8)  # 窗口透明度
         self.btn1 = QPushButton("Yes")
         self.btn2 = QPushButton("Cancel")
@@ -500,7 +554,7 @@ class modifyinfo(QWidget):
     def __init__(self, parent=None):
         super(modifyinfo, self).__init__(parent)
         self.resize(400, 100)
-        self.setStyleSheet(style)
+        # self.setStyleSheet(style)
         # self.setWindowOpacity(0.8)  # 窗口透明度
         # 设置增加记录的标签和文本框
         self.labelWebsite = QLabel("New Website")

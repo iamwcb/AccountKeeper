@@ -12,6 +12,7 @@ from PyQt5.QtCore import Qt, QRect
 from base64 import b64decode
 from addWindow import Ui_addWindow
 from LoginDialog import Ui_LoginDialog
+from modify import Ui_modify
 
 
 # from PyQt5.QtCore import QCoreApplication
@@ -60,7 +61,7 @@ Label_style = """
         font-family:"Courier New";
         color: white;
         font-weight: bold;
-        font-size:18px;
+        font-size:16px;
         } """
 
 CheckBox_style = """
@@ -280,12 +281,6 @@ class LoginDialog(QDialog, Ui_LoginDialog):
                 }
                 with open('user.ini', 'w') as configfile:
                     config.write(configfile)
-            # else:
-            #     config["DEFAULT"] = {
-            #         "user_name": self.leName.text(),
-            #         "password": "",
-            #         "remember": self.keepPwBtn.isChecked()
-            #     }
         else:
             QMessageBox.critical(self, u'ERROR', u'User name password mismatch')
 
@@ -426,52 +421,19 @@ class qrshanchu(QDialog):
         self.m_drag = False
 
 
-class modifyinfo(QWidget):
+class modifyinfo(QWidget, Ui_modify):
     def __init__(self, parent=None):
         super(modifyinfo, self).__init__(parent)
-        self.resize(400, 100)
-        # self.setStyleSheet(style)
-        # self.setWindowOpacity(0.8)  # 窗口透明度
-        # 设置增加记录的标签和文本框
-        self.labelWebsite = QLabel("New Website")
-        self.labelID = QLabel("New ID")
-        self.labelPw = QLabel("New Password")
-
-        pe = QPalette()
-        pe.setColor(QPalette.WindowText, Qt.white)
-        self.labelWebsite.setPalette(pe)
-        self.labelID.setPalette(pe)
-        self.labelPw.setPalette(pe)
-
-        self.labelWebsite.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.labelPw.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.lineeditWebsite = QLineEdit()
-        self.lineeditWebsite.setFont(QFont("Verdana", 9))
-        self.lineeditID = QLineEdit()
-        self.lineeditID.setFont(QFont("Verdana", 9))
-        self.lineeditPw = QLineEdit()
-        self.lineeditPw.setFont(QFont("Verdana", 9))
-        self.yesbtn = QPushButton('Yes')
-        self.cancelbtn = QPushButton('Cancel')
-
-        self.yesbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.yesbtn.setStyleSheet(button_hover)
-        self.cancelbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.cancelbtn.setStyleSheet(button_hover)
-
-        buttonLayout = QHBoxLayout()
-        buttonLayout.addWidget(self.yesbtn)
-        buttonLayout.addWidget(self.cancelbtn)
-        layout = QVBoxLayout()
-        layout.addWidget(self.labelWebsite)
-        layout.addWidget(self.lineeditWebsite)
-        layout.addWidget(self.labelID)
-        layout.addWidget(self.lineeditID)
-        layout.addWidget(self.labelPw)
-        layout.addWidget(self.lineeditPw)
-        layout.addLayout(buttonLayout)
-        self.setLayout(layout)
+        self.setupUi(self)
+        # 设置样式
+        self.yesbtn.setStyleSheet(Button_style)
+        self.cancelbtn.setStyleSheet(Button_style)
+        self.lineeditWebsite.setStyleSheet(LineEdit_style)
+        self.lineeditID.setStyleSheet(LineEdit_style)
+        self.lineeditPw.setStyleSheet(LineEdit_style)
+        self.lineEdit.setStyleSheet(Label_style)
+        self.lineEdit_2.setStyleSheet(Label_style)
+        self.lineEdit_3.setStyleSheet(Label_style)
         self.initui()
 
     def initui(self):

@@ -186,7 +186,7 @@ class addWindow(QWidget):
         self.pwLen = QSpinBox(self)
         self.pwLen.setRange(1, 100)
         self.pwLen.setSingleStep(1)
-        self.pwLen.setValue(8)
+        self.pwLen.setValue(16)
         # 设置复选框默认为选中状态
         self.auto_az.setChecked(True)
         self.auto_AZ.setChecked(True)
@@ -657,32 +657,20 @@ class mainw(QMainWindow):
         if self.window3.auto_az.isChecked() or self.window3.auto_AZ.isChecked() or self.window3.auto_num.isChecked() or self.window3.auto_char.isChecked():
             if self.window3.auto_az.isChecked():
                 total_list = total_list + list_az
-                if self.window3.auto_AZ.isChecked():
-                    total_list = total_list + list_AZ
-                    if self.window3.auto_num.isChecked():
-                        total_list = total_list + list_num
-                        if self.window3.auto_char.isChecked():
-                            total_list = total_list + list_char
-            elif self.window3.auto_AZ.isChecked():
+            if self.window3.auto_AZ.isChecked():
                 total_list = total_list + list_AZ
-                if self.window3.auto_num.isChecked():
-                    total_list = total_list + list_num
-                    if self.window3.auto_char.isChecked():
-                        total_list = total_list + list_char
-            elif self.window3.auto_num.isChecked():
+            if self.window3.auto_num.isChecked():
                 total_list = total_list + list_num
-                if self.window3.auto_char.isChecked():
-                    total_list = total_list + list_char
-            else:
+            if self.window3.auto_char.isChecked():
                 total_list = total_list + list_char
-            # print(self.window3.pwLen.value())
+            temp_count = int(self.window3.pwLen.value())
             auto_gen_pw = ''
-            auto_gen_pw = auto_gen_pw.join(random.sample(total_list, int(self.window3.pwLen.value())))
-            # print(auto_gen_pw)
+            while temp_count != 0:
+                auto_gen_pw = auto_gen_pw + random.sample(total_list, 1)[0]
+                temp_count = temp_count - 1
             self.window3.lineeditPw.setText(auto_gen_pw)
         else:
             QMessageBox.critical(self, u'Warning', u'Check at least one check box!')
-
 
     def aboutbtn(self):
         QMessageBox.about(self, u'About',

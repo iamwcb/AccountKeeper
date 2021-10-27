@@ -11,6 +11,7 @@ import sqlite3
 from PyQt5.QtCore import Qt, QRect
 from base64 import b64decode
 from addWindow import Ui_addWindow
+from LoginDialog import Ui_LoginDialog
 
 
 # from PyQt5.QtCore import QCoreApplication
@@ -42,29 +43,16 @@ get_pic(modify_login_png, 'modify_login.png')
 
 Button_style = ''' 
                      QPushButton
-                     {text-align : center;
-                     font-family: Courier New;
-                     font: bold;
-                     border-color: gray;
-                     border-width: 2px;
-                     border-radius: 10px;
-                     padding: 6px;
-                     height : 14px;
-                     border-style: outset;
-                     font : 14px;}
-                     QPushButton:pressed
-                     {text-align : center;
-                     background-color : light gray;
-                     font: bold;
-                     height : 14px;
-                     font : 14px;}
+                     {color: Black;
+                     font-family: Courier;
+                     font : 16px;}
                      QPushButton:hover
                      {background-color:rgb(224, 128, 49);}
                      '''
 LineEdit_style = """
         QLineEdit{
         font-family:"Courier New";
-        font-size:10px;
+        font-size:18px;
         }"""
 
 Label_style = """
@@ -72,9 +60,18 @@ Label_style = """
         font-family:"Courier New";
         color: white;
         font-weight: bold;
-        font-size:10px;
+        font-size:18px;
         } """
 
+CheckBox_style = """
+        QCheckBox{
+        color: white;
+        } """
+
+RadioButton_style = """
+        QRadioButton{
+        color: white;
+        } """
 button_hover = "QPushButton:hover{background-color:rgb(224, 128, 49);}"
 
 
@@ -183,111 +180,6 @@ class TestWidget(QWidget):
 
 
 # 增加记录的窗口
-# class addWindow(QWidget):
-#     def __init__(self, parent=None):
-#         super(addWindow, self).__init__(parent)
-#         self.resize(400, 100)
-#         self.setStyleSheet(style)
-#         # self.setWindowOpacity(0.8)  # 窗口透明度
-#         # 设置增加记录的标签和文本框
-#         self.labelWebsite = QLabel("Website")
-#         self.labelID = QLabel("ID")
-#         self.labelPw = QLabel("Password")
-#         self.auto_az = QCheckBox("a-z")
-#         self.auto_AZ = QCheckBox("A-Z")
-#         self.auto_num = QCheckBox("0-9")
-#         self.auto_char = QCheckBox("!@#$...")
-#         self.pwLenLabel = QLabel("Password Length")
-#         # 密码长度
-#         self.pwLen = QSpinBox(self)
-#         self.pwLen.setRange(1, 100)
-#         self.pwLen.setSingleStep(1)
-#         self.pwLen.setValue(16)
-#         # 设置复选框默认为选中状态
-#         self.auto_az.setChecked(True)
-#         self.auto_AZ.setChecked(True)
-#         self.auto_num.setChecked(True)
-#         pe = QPalette()
-#         pe.setColor(QPalette.WindowText, Qt.white)
-#         self.labelWebsite.setPalette(pe)
-#         self.labelID.setPalette(pe)
-#         self.labelPw.setPalette(pe)
-#
-#         self.labelWebsite.setFont(QFont("Courier New", 10, QFont.Bold))
-#         self.labelID.setFont(QFont("Courier New", 10, QFont.Bold))
-#         self.labelPw.setFont(QFont("Courier New", 10, QFont.Bold))
-#         self.auto_az.setStyleSheet('Color: white')
-#         self.auto_AZ.setStyleSheet('Color: white')
-#         self.auto_num.setStyleSheet('Color: white')
-#         self.auto_char.setStyleSheet('Color: white')
-#         self.pwLenLabel.setStyleSheet('Color: white')
-#
-#         self.lineeditWebsite = QLineEdit()
-#         self.lineeditWebsite.setFont(QFont("Verdana", 9))
-#         self.lineeditID = QLineEdit()
-#         self.lineeditID.setFont(QFont("Verdana", 9))
-#         self.lineeditPw = QLineEdit()
-#         self.lineeditPw.setFont(QFont("Verdana", 9))
-#         self.yesbtn = QPushButton('Yes')
-#         self.cancelbtn = QPushButton('Cancel')
-#         self.genPw = QPushButton('Generate')
-#
-#         self.yesbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-#         self.yesbtn.setStyleSheet(button_hover)
-#         self.cancelbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-#         self.cancelbtn.setStyleSheet(button_hover)
-#         self.genPw.setFont(QFont("Courier New", 8, QFont.Bold))
-#         self.genPw.setStyleSheet(button_hover)
-#
-#         buttonLayout = QHBoxLayout()
-#         buttonLayout.addWidget(self.yesbtn)
-#         buttonLayout.addWidget(self.cancelbtn)
-#         layout = QVBoxLayout()
-#         layout.addWidget(self.labelWebsite)
-#         layout.addWidget(self.lineeditWebsite)
-#         layout.addWidget(self.labelID)
-#         layout.addWidget(self.lineeditID)
-#         layout.addWidget(self.labelPw)
-#         layout.addWidget(self.lineeditPw)
-#         autoPwLayout1 = QHBoxLayout()
-#         autoPwLayout1.addWidget(self.auto_az)
-#         autoPwLayout1.addWidget(self.auto_AZ)
-#         autoPwLayout1.addWidget(self.auto_num)
-#         autoPwLayout1.addWidget(self.auto_char)
-#         autoPwLayout2 = QVBoxLayout()
-#         autoPwLayout2.addWidget(self.pwLenLabel)
-#         autoPwLayout2.addWidget(self.pwLen)
-#         autoPwLayout1.addLayout(autoPwLayout2)
-#         autoPwLayout1.addWidget(self.genPw)
-#         layout.addLayout(autoPwLayout1)
-#         layout.addLayout(buttonLayout)
-#         self.setLayout(layout)
-#         self.initui()
-#
-#     def initui(self):
-#         self.setWindowFlags(Qt.FramelessWindowHint)  # 去窗口
-#
-#     def paintEvent(self, event):  # 设置背景图片
-#         self.painter = QPainter()
-#         self.painter.begin(self)
-#         self.painter.drawPixmap(self.rect(), QPixmap('BM.png'))
-#         self.painter.end()
-#
-#     def mousePressEvent(self, event):  # 以下3个函数用来使窗口可以拖动
-#         if event.button() == Qt.LeftButton:
-#             self.m_drag = True
-#             self.m_DragPosition = event.globalPos() - self.pos()
-#             event.accept()
-#
-#     def mouseMoveEvent(self, QMouseEvent):
-#         if QMouseEvent.buttons() and Qt.LeftButton:
-#             self.move(QMouseEvent.globalPos() - self.m_DragPosition)
-#             QMouseEvent.accept()
-#
-#     def mouseReleaseEvent(self, QMouseEvent):
-#         self.m_drag = False
-
-# 增加记录的窗口
 class addWindow(QDialog, Ui_addWindow):
     def __init__(self, parent=None):
         super(addWindow, self).__init__(parent)
@@ -301,6 +193,16 @@ class addWindow(QDialog, Ui_addWindow):
         self.lineeditWebsite.setStyleSheet(LineEdit_style)
         self.lineeditID.setStyleSheet(LineEdit_style)
         self.lineeditPw.setStyleSheet(LineEdit_style)
+        self.labelWebsite.setStyleSheet(Label_style)
+        self.labelID.setStyleSheet(Label_style)
+        self.labelPw.setStyleSheet(Label_style)
+        self.lineeditWebsite.setStyleSheet(LineEdit_style)
+        self.lineeditID.setStyleSheet(LineEdit_style)
+        self.lineeditPw.setStyleSheet(LineEdit_style)
+        self.auto_az.setStyleSheet(CheckBox_style)
+        self.auto_AZ.setStyleSheet(CheckBox_style)
+        self.auto_num.setStyleSheet(CheckBox_style)
+        self.auto_char.setStyleSheet(CheckBox_style)
         self.initui()
 
     def initui(self):
@@ -326,48 +228,22 @@ class addWindow(QDialog, Ui_addWindow):
     def mouseReleaseEvent(self, QMouseEvent):
         self.m_drag = False
 
+
 # 登录窗口
-class LoginDialog(QDialog):
+class LoginDialog(QDialog, Ui_LoginDialog):
     def __init__(self, parent=None):
-        QDialog.__init__(self, parent)
-        # self.setWindowOpacity(0.9) #窗口透明度
-        self.resize(400, 250)
-        # self.setStyleSheet(style)
-        self.leName = QLineEdit(self)
-        self.leName.setFixedHeight(30)
-        self.leName.setPlaceholderText(u'Account')
-        self.leName.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.lePassword = QLineEdit(self)
-        self.lePassword.setFixedHeight(30)
-        self.lePassword.setEchoMode(QLineEdit.Password)
-        # .setEchoMode(EchoMode),设置输入框显示格式,0--Normal,1--NoEcho,2--Password,3--PasswordEchoOnEdit
-        self.lePassword.setPlaceholderText(u'Password')
-        self.lePassword.setFont(QFont("Courier New", 10, QFont.Bold))
+        super(LoginDialog, self).__init__(parent)
+        self.setupUi(self)
 
-        self.pbLogin = QPushButton(u'Login', self)
-        self.pbCancel = QPushButton(u'Cancel', self)
-
-        self.pbLogin.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.pbLogin.setStyleSheet(button_hover)
-        self.pbCancel.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.pbCancel.setStyleSheet(button_hover)
         self.pbLogin.clicked.connect(self.login)
         self.pbCancel.clicked.connect(self.reject)
+        # 样式设置
+        self.keepPwBtn.setStyleSheet(RadioButton_style)
+        self.pbLogin.setStyleSheet(Button_style)
+        self.pbCancel.setStyleSheet(Button_style)
+        self.leName.setStyleSheet(LineEdit_style)
+        self.lePassword.setStyleSheet(LineEdit_style)
 
-        layout = QVBoxLayout()
-        layout.addWidget(self.leName)
-        layout.addWidget(self.lePassword)
-        buttonLayout = QHBoxLayout()
-        buttonLayout.addWidget(self.pbLogin)
-        buttonLayout.addWidget(self.pbCancel)
-        self.keepPwBtn = QRadioButton('Keep Password')
-        self.keepPwBtn.setStyleSheet("font: Verdana; color: #ffffff;")
-
-        buttonLayout1 = QHBoxLayout()
-        buttonLayout1.addWidget(self.keepPwBtn)
-        layout.addLayout(buttonLayout)
-        layout.addLayout(buttonLayout1)
-        self.setLayout(layout)
         self.initui()
         self.load_config()
 

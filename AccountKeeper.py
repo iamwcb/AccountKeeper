@@ -13,6 +13,7 @@ from base64 import b64decode
 from addWindow import Ui_addWindow
 from LoginDialog import Ui_LoginDialog
 from modify import Ui_modify
+from modifyLogin import Ui_modifyLogin
 
 
 # from PyQt5.QtCore import QCoreApplication
@@ -194,12 +195,6 @@ class addWindow(QDialog, Ui_addWindow):
         self.lineeditWebsite.setStyleSheet(LineEdit_style)
         self.lineeditID.setStyleSheet(LineEdit_style)
         self.lineeditPw.setStyleSheet(LineEdit_style)
-        self.labelWebsite.setStyleSheet(Label_style)
-        self.labelID.setStyleSheet(Label_style)
-        self.labelPw.setStyleSheet(Label_style)
-        self.lineeditWebsite.setStyleSheet(LineEdit_style)
-        self.lineeditID.setStyleSheet(LineEdit_style)
-        self.lineeditPw.setStyleSheet(LineEdit_style)
         self.auto_az.setStyleSheet(CheckBox_style)
         self.auto_AZ.setStyleSheet(CheckBox_style)
         self.auto_num.setStyleSheet(CheckBox_style)
@@ -303,52 +298,20 @@ class LoginDialog(QDialog, Ui_LoginDialog):
 
 
 # 修改登录信息
-class xgdl(QDialog):
+class modifyLoginInfo(QDialog, Ui_modifyLogin):
     def __init__(self, parent=None):
-        super(xgdl, self).__init__(parent)
+        super(modifyLoginInfo, self).__init__(parent)
         self.resize(400, 250)
-        # self.setWindowOpacity(0.8)  # 窗口透明度
-        self.labelOldPw = QLabel("Original Password")
-        self.labelNewAcc = QLabel("New Username")
-        self.labelNewPw = QLabel("New Password")
-
-        pe = QPalette()
-        pe.setColor(QPalette.WindowText, Qt.white)
-        self.labelOldPw.setPalette(pe)
-        self.labelNewAcc.setPalette(pe)
-        self.labelNewPw.setPalette(pe)
-
-        self.labelOldPw.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.labelNewAcc.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.labelNewPw.setFont(QFont("Courier New", 10, QFont.Bold))
-
-        self.oldpw = QLineEdit(self)
-        self.oldpw.setFont(QFont("Verdana", 9))
-        self.newacc = QLineEdit(self)
-        self.newacc.setFont(QFont("Verdana", 9))
-        self.newpw = QLineEdit(self)
-        self.newpw.setFont(QFont("Verdana", 9))
-        self.queren = QPushButton(u'Modify')
-        self.quxiao = QPushButton(u'Cancel')
-
-        self.queren.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.queren.setStyleSheet(button_hover)
-        self.quxiao.setFont(QFont("Courier New", 10, QFont.Bold))
-        self.quxiao.setStyleSheet(button_hover)
-
-        buttonLayout = QHBoxLayout()
-        buttonLayout.addWidget(self.queren)
-        buttonLayout.addWidget(self.quxiao)
-        layout = QVBoxLayout()
-        layout.addWidget(self.labelOldPw)
-        layout.addWidget(self.oldpw)
-        layout.addWidget(self.labelNewAcc)
-        layout.addWidget(self.newacc)
-        layout.addWidget(self.labelNewPw)
-        layout.addWidget(self.newpw)
-        layout.addLayout(buttonLayout)
-        self.setLayout(layout)
-        # self.setStyleSheet(style)
+        self.setupUi(self)
+        # 设置样式
+        self.queren.setStyleSheet(Button_style)
+        self.quxiao.setStyleSheet(Button_style)
+        self.labelOldPw.setStyleSheet(Label_style)
+        self.labelNewAcc.setStyleSheet(Label_style)
+        self.labelNewPw.setStyleSheet(Label_style)
+        self.oldpw.setStyleSheet(LineEdit_style)
+        self.newacc.setStyleSheet(LineEdit_style)
+        self.newpw.setStyleSheet(LineEdit_style)
         self.initui()
 
     def paintEvent(self, event):  # 设置背景图片
@@ -379,6 +342,7 @@ class xgdl(QDialog):
 class qrshanchu(QDialog):
     def __init__(self, parent=None):
         super(qrshanchu, self).__init__(parent)
+        self.setWindowTitle("Delete")
         self.resize(300, 100)
         self.setWindowFlags(Qt.WindowCloseButtonHint)
         # self.setStyleSheet(style)
@@ -468,7 +432,7 @@ class mainw(QMainWindow):
         self.window1 = TestWidget()
         self.window2 = qrshanchu()
         self.window3 = addWindow()
-        self.window4 = xgdl()
+        self.window4 = modifyLoginInfo()
         self.window5 = modifyinfo()
 
         self.statusBar()  # 创建一个空的状态栏

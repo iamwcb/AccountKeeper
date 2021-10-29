@@ -25,6 +25,12 @@
    <property name="text">
     <string>Cancel</string>
    </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+   <property name="default">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="pbLogin">
    <property name="geometry">
@@ -37,6 +43,9 @@
    </property>
    <property name="text">
     <string>Login</string>
+   </property>
+   <property name="default">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLineEdit" name="lePassword">

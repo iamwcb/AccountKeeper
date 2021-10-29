@@ -132,23 +132,6 @@ class TestWidget(QWidget):
         self.model = Model(self.view)
         self.view.setModel(self.model)
         self.view.setFont(QFont("Courier New", 10))  # 设置表格字体
-        # 按键布置
-        # self.addbtn = QPushButton('Add')
-        # self.delbtn = QPushButton('Delete')
-        # self.cz = QPushButton("Modify LoginInfo")
-        # # self.Tabclose = QPushButton("Close")
-        # self.modify = QPushButton("Modify")
-        # 按键样式设置
-        # self.addbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-        # self.addbtn.setStyleSheet(button_hover)
-        # self.delbtn.setFont(QFont("Courier New", 10, QFont.Bold))
-        # self.delbtn.setStyleSheet(button_hover)
-        # self.cz.setFont(QFont("Courier New", 10, QFont.Bold))
-        # self.cz.setStyleSheet(button_hover)
-        # self.Tabclose.setFont(QFont("Courier New", 10, QFont.Bold))
-        # self.Tabclose.setStyleSheet(button_hover)
-        # self.modify.setFont(QFont("Courier New", 10, QFont.Bold))
-        # self.modify.setStyleSheet(button_hover)
         # 表格样式设置
         # self.view.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置单元格不可编辑
         # self.view.setSelectionBehavior(QTableView.SelectRows)  # 选取整行
@@ -161,18 +144,8 @@ class TestWidget(QWidget):
         # 布局设置
         wwg = QWidget(self)
         wl = QHBoxLayout(wwg)
-        # layout = QGridLayout()
-        # layout.addWidget(self.addbtn, 0, 0)
-        # layout.addWidget(self.delbtn, 1, 0)
-        # layout.addWidget(self.cz, 2, 0)
-        # layout.addWidget(self.modify, 3, 0)
-        # layout.addWidget(self.Tabclose, 4, 0)
         wl.addWidget(self.view)
-        # wl.addLayout(layout)
-        # wl.setStretchFactor(layout, 1)
-        # wl.setStretchFactor(self.view, 7)
         self.setLayout(wl)
-        # self.setStyleSheet(style)
 
     # def paintEvent(self, event):  # 设置背景图片
     #     self.painter = QPainter()
@@ -573,10 +546,6 @@ class mainw(QMainWindow):
     def xg(self):
         self.window4.show()
 
-    # def closeWindow(self):
-    #     self.window1.close()
-    #     self.window2.close()
-    #     self.window3.close()
 
     def yes(self):
         index = self.window1.view.currentIndex()

@@ -87,11 +87,14 @@ class check_update_thread(QThread):  # 步骤1.创建一个线程实例
         super(check_update_thread, self).__init__()
 
     def run(self):
-        url = 'https://iamwcb.github.io/wcb.github.io/SDP.html#Version-1.1-updated-at-Nov.11-2019'
-        html = request.urlopen(url)
-        soup = BeautifulSoup(html, 'html.parser')
-        find = soup.find_all('a', href=re.compile('pan.baidu.com'))
-        self.mysignal.emit(find[0].get('href'))  # 发射自定义信号
+        try:
+            url = 'https://iamwcb.github.io/wcb.github.io/SDP.html#Version-1.1-updated-at-Nov.11-2019'
+            html = request.urlopen(url)
+            soup = BeautifulSoup(html, 'html.parser')
+            find = soup.find_all('a', href=re.compile('pan.baidu.com'))
+            self.mysignal.emit(find[0].get('href'))
+        except IOError:
+            self.mysignal.emit('Check failed')
 
 
 # 创建数据库连接
@@ -505,8 +508,13 @@ class mainw(QMainWindow):
         self.my_thread.start()
 
     def update_result(self, result):
-        msg = "<a href='%s'>Click to download</a>" % result
-        QMessageBox.information(self, "Update", msg)
+        if result == 'Check failed':
+            QMessageBox.information(self, "Update", "Check Failed! Please Check Your Internet!")
+        else:
+            # Todo 判断版本号
+            if 1:
+                msg = "<a href='%s'>Click to download</a>" % result
+                QMessageBox.information(self, "Update", msg)
 
     def autoGenPw(self):
         total_list = ""

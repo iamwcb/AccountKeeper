@@ -81,20 +81,20 @@ button_hover = "QPushButton:hover{background-color:rgb(224, 128, 49);}"
 
 
 class check_update_thread(QThread):  # 步骤1.创建一个线程实例
-    mysignal = pyqtSignal(str)  # 创建一个自定义信号，元组参数
+    mysignal = pyqtSignal(str, str)  # 创建一个自定义信号，元组参数
 
     def __init__(self):
         super(check_update_thread, self).__init__()
 
     def run(self):
         try:
-            url = 'https://iamwcb.github.io/wcb.github.io/SDP.html#Version-1.1-updated-at-Nov.11-2019'
+            url = 'http://wuchunbo.online/2020/11/20/Account-Keeper/'
             html = request.urlopen(url)
             soup = BeautifulSoup(html, 'html.parser')
             find = soup.find_all('a', href=re.compile('pan.baidu.com'))
-            self.mysignal.emit(find[0].get('href'))
+            self.mysignal.emit(find[0].get('href'), find[0].get_text())
         except IOError:
-            self.mysignal.emit('Check failed')
+            self.mysignal.emit('Check failed', 'Check failed')
 
 
 # 创建数据库连接
@@ -427,6 +427,7 @@ class mainw(QMainWindow):
         self.window3 = addWindow()
         self.window4 = modifyLoginInfo()
         self.window5 = modifyinfo()
+        self.version = "Version 1.4"
 
         self.statusBar()  # 创建一个空的状态栏
         menubar = self.menuBar()
@@ -507,14 +508,14 @@ class mainw(QMainWindow):
     def update_check_action(self):
         self.my_thread.start()
 
-    def update_result(self, result):
-        if result == 'Check failed':
+    def update_result(self, url, version):
+        if url == 'Check failed':
             QMessageBox.information(self, "Update", "Check Failed! Please Check Your Internet!")
+        elif version == self.version:
+            QMessageBox.information(self, "Update", "You already have the latest version!")
         else:
-            # Todo 判断版本号
-            if 1:
-                msg = "<a href='%s'>Click to download</a>" % result
-                QMessageBox.information(self, "Update", msg)
+            msg = "<a href='%s'>The New %s is available. Click to download</a>" % (url, version)
+            QMessageBox.information(self, "Update", msg)
 
     def autoGenPw(self):
         total_list = ""
@@ -542,7 +543,7 @@ class mainw(QMainWindow):
 
     def aboutbtn(self):
         QMessageBox.about(self, u'About',
-                          u'Account Manager (Version 1.3)\n\nThis software is used to record your account and password. \n\n\n\nLucas Wu All Rights Reserved')
+                          u"Account Manager (%s)\n\nThis software is used to record your account and password. \n\n\n\nLucas Wu All Rights Reserved" % self.version)
 
     def cancelModifyInfo(self):
         self.window5.close()
@@ -608,6 +609,9 @@ class mainw(QMainWindow):
         self.window3.close()
 
     def cancelInput(self):
+        self.window3.lineeditWebsite.setText('')
+        self.window3.lineeditID.setText('')
+        self.window3.lineeditPw.setText('')
         self.window3.close()
 
     def cz(self):

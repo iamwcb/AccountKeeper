@@ -7,9 +7,8 @@ from PyQt5.QtSql import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import sys
-import os
 import sqlite3
-from PyQt5.QtCore import Qt, QRect, QThread, pyqtSignal
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from base64 import b64decode
 from addWindow import Ui_addWindow
 from LoginDialog import Ui_LoginDialog

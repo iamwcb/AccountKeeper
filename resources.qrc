@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="images">
+    <file>images/about.png</file>
+    <file>images/add.png</file>
+    <file>images/delete_fill.png</file>
+    <file>images/exit.png</file>
+    <file>images/modify.png</file>
+    <file>images/modify_login.png</file>
+    <file>images/update.png</file>
+    <file>images/akico.ico</file>
+    <file>images/bm.png</file>
+  </qresource>
+</RCC>
